@@ -7,20 +7,25 @@ Accessible from any PC via GitHub — no auth needed.
 
 ## Session Start — Copy one of these at the start of any Claude session
 
-### Quick start (paste this first, always)
+### Versão curta
 ```
-Lê o README.md e RULES.md de blip-research. Depois lê o HANDOFF.md da pasta relevante antes de fazeres qualquer coisa.
+Lê o `README.md` e `RULES.md` de `blip-research`. Com base na tarefa pedida pelo utilizador, identifica a subpasta relevante (`hardware/`, `infra/`, etc.) e lê o `HANDOFF.md` dessa pasta se existir. Mantém as regras do `RULES.md` ativas durante toda a sessão.
 ```
 
-### Extended start (use when starting fresh or if files may be missing)
+### Versão extendida
 ```
-Estamos a trabalhar no repositório blip-research. Antes de começares:
-1. Verifica se tens acesso à pasta D:\jetblip\github\blip-research\ — se não existir ou estiver desatualizada, clona com: git clone https://ghp_<PAT>@github.com/jeremytrindade/blip-research.git /tmp/blip-research
-2. Lê README.md e RULES.md na raiz do repo.
-3. Lê o HANDOFF.md da pasta do projeto em que vamos trabalhar (ex: hardware/jetblip-node-upgrade/HANDOFF.md).
-4. Confirma que sabes responder às perguntas de verificação do HANDOFF antes de continuares.
-5. Todo o trabalho desta sessão segue as RULES.md — incluindo HTML companion obrigatório e commit via git CLI.
-O PAT está em: D:\credentials\credentials-v21\pc-20260517.txt
+Antes de qualquer trabalho em `blip-research`, segue esta sequência:
+
+1. Verificar pasta — confirma se `blip-research` está disponível no workspace. Se não estiver, pede o GitHub PAT ao utilizador e faz git clone com esse PAT. Se já existir, faz git pull.
+2. Ler por ordem — README.md primeiro (estrutura e índice), depois RULES.md (regras operacionais para a sessão).
+3. Identificar subpasta — com base na tarefa descrita pelo utilizador, determina a subpasta relevante (hardware/, infra/, ou outra). Se não for óbvio, pergunta ao utilizador antes de avançar.
+4. Ler HANDOFF.md — se existir na subpasta identificada, lê-o e confirma as perguntas de verificação que contiver antes de avançar. Se não existir, continua sem bloquear.
+5. Regras ativas — mantém as regras do RULES.md em memória durante toda a sessão: git CLI obrigatório, estrutura de ficheiros YYYYMMDD-topic-slug.md, README atualizado no mesmo commit, HTML companion obrigatório (Rule #5), fontes secundárias em ## Alternative Context.
+```
+
+### Alternativa com paths diretas (mais robusta)
+```
+read /github/blip-research/README.md e /github/blip-research/RULES.md. Se houver HANDOFF.md na subpasta da tarefa atual, lê-o também. Mantém as regras do RULES.md ativas durante a sessão.
 ```
 
 ---
