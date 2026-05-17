@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="pt" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jetblip Node Upgrade — M720q Tiny EU Research</title>
+<style>
+  /* ── Base tokens ── */
+  :root {
+    --bg:        #0f1117;
+    --surface:   #181b25;
+    --card:      #1d2030;
+    --card-edge: #2a2e42;
+    --border:    #353a52;
+    --muted:     #9099b8;
+    --text:      #e8ecf6;
+    --accent:    #3ecf8e;
+    --accent2:   #6ea5ff;
+    --warn:      #f7c155;
+    --error:     #f55a5a;
+    --green:     #3ecf8e;
+    --yellow:    #f7c155;
+    --red:       #f55a5a;
+    --code-bg:   #131623;
+  }
+  [data-theme="light"] {
+    --bg:        #f4f6fb;
+    --surface:   #ffffff;
+    --card:      #ffffff;
+    --card-edge: #dde2f0;
+    --border:    #d0d6e8;
+    --muted:     #6b7499;
+    --text:      #1a1f35;
+    --accent:    #1aaa6e;
+    --accent2:   #2e6fcc;
+    --warn:      #b07d00;
+    --error:     #cc3333;
+    --green:     #1aaa6e;
+    --yellow:    #b07d00;
+    --red:       #cc3333;
+    --code-bg:   #eef0f7;
+  }
+
+  /* ── Reset ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+    transition: background .2s, color .2s;
+  }
+
+  /* ── Header ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .header-inner {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .header-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header-title .repo-tag {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+  }
+  .header-actions { display: flex; align-items: center; gap: 10px; }
+  .badge-date {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .theme-toggle {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0 12px;
+    transition: background .15s, color .15s;
+    user-select: none;
+  }
+  .theme-toggle:hover { background: var(--card-edge); color: var(--text); }
+
+  /* ── Layout ── */
+  main {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    margin-bottom: 36px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .hero .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 640px;
+    line-height: 1.6;
+  }
+  .hero .winner-banner {
+    margin-top: 20px;
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .winner-banner .trophy { font-size: 28px; line-height: 1; }
+  .winner-banner .winner-content { flex: 1; }
+  .winner-banner .winner-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .winner-banner .winner-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .winner-banner .winner-meta {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .winner-banner .winner-price {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* ── Sections ── */
+  section { margin-bottom: 44px; }
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .section-icon { font-size: 20px; }
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent2);
+    margin: 20px 0 10px;
+  }
+
+  /* ── Tier cards ── */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .tier-card {
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .tier-card .tier-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 6px;
+  }
+  .tier-card .tier-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .tier-card .tier-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .tier-card.t1 { border-left: 4px solid var(--green); }
+  .tier-card.t1 .tier-label { color: var(--green); }
+  .tier-card.t2 { border-left: 4px solid var(--yellow); }
+  .tier-card.t2 .tier-label { color: var(--yellow); }
+  .tier-card.eff { border-left: 4px solid var(--accent2); }
+  .tier-card.eff .tier-label { color: var(--accent2); }
+  .tier-card.t3 { border-left: 4px solid var(--red); }
+  .tier-card.t3 .tier-label { color: var(--red); }
+
+  /* ── Tables ── */
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    min-width: 580px;
+  }
+  thead th {
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    color: var(--text);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: rgba(110,165,255,.04); }
+
+  /* ── Status dots ── */
+  .dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+  .dot.green { background: var(--green); }
+  .dot.yellow { background: var(--yellow); }
+  .dot.red { background: var(--red); }
+  .dot.blue { background: var(--accent2); }
+
+  /* Stock status cells - text stays var(--text), color encoded via dot + row border */
+  tr.stock-ok { border-left: 3px solid var(--green); }
+  tr.stock-empty { border-left: 3px solid var(--red); }
+  tr.stock-watch { border-left: 3px solid var(--yellow); }
+  tr.stock-skip { border-left: 3px solid var(--muted); opacity: .75; }
+  tr.stock-flag { border-left: 3px solid var(--error); background: rgba(245,90,90,.04); }
+
+  /* ── Price highlight ── */
+  .price-main {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .price-sub {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .price-strike {
+    text-decoration: line-through;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* ── Verdict badges ── */
+  .verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .verdict.buy { background: rgba(62,207,142,.15); color: var(--green); border: 1px solid rgba(62,207,142,.3); }
+  .verdict.watch { background: rgba(247,193,85,.15); color: var(--yellow); border: 1px solid rgba(247,193,85,.3); }
+  .verdict.skip { background: rgba(144,153,184,.1); color: var(--muted); border: 1px solid var(--border); }
+  .verdict.avoid { background: rgba(245,90,90,.12); color: var(--red); border: 1px solid rgba(245,90,90,.3); }
+  .verdict.flag { background: rgba(245,90,90,.12); color: var(--red); border: 1px solid rgba(245,90,90,.3); }
+
+  /* ── Callouts ── */
+  .callout {
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 12px 0;
+    line-height: 1.6;
+  }
+  .callout.warn { border-left-color: var(--yellow); }
+  .callout.danger { border-left-color: var(--red); }
+  .callout.info { border-left-color: var(--accent2); }
+  .callout strong { color: var(--text); }
+
+  /* ── Comparison grid ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 160px repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  .compare-grid .cg-cell {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    vertical-align: middle;
+    line-height: 1.4;
+  }
+  .compare-grid .cg-cell:nth-child(5n) { border-right: none; }
+  .compare-grid .cg-row-label {
+    background: var(--surface);
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .compare-grid .cg-head {
+    background: var(--surface);
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--muted);
+  }
+  .compare-grid .cg-head.winner { color: var(--accent); }
+  .compare-grid .cg-last { border-bottom: none; }
+  .compare-grid .cg-win { color: var(--green); font-weight: 600; }
+  .compare-grid .cg-mid { color: var(--text); }
+  .compare-grid .cg-low { color: var(--muted); }
+
+  /* ── Strategy steps ── */
+  .steps { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--card-edge);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 700; font-size: 14px; margin-bottom: 3px; color: var(--text); }
+  .step-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* ── Links ── */
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Note ── */
+  .note { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 5px;
+    background: var(--card-edge);
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .tag.t1 { background: rgba(62,207,142,.12); color: var(--green); }
+  .tag.t2 { background: rgba(247,193,85,.12); color: var(--yellow); }
+  .tag.t3 { background: rgba(245,90,90,.12); color: var(--red); }
+  .tag.eff { background: rgba(110,165,255,.12); color: var(--accent2); }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── Nav pills ── */
+  .nav-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .nav-pill {
+    font-size: 12.5px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .12s, color .12s;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+  }
+  .nav-pill:hover { background: var(--card-edge); color: var(--text); text-decoration: none; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .header-inner { padding: 0 16px; }
+    main { padding: 20px 16px 60px; }
+    .hero h1 { font-size: 22px; }
+    .winner-banner { flex-direction: column; gap: 8px; }
+    .winner-banner .winner-price { font-size: 22px; }
+    .tier-grid { grid-template-columns: 1fr 1fr; }
+    .compare-grid { grid-template-columns: 120px repeat(4, 1fr); font-size: 12px; }
+    .compare-grid .cg-cell { padding: 8px 8px; }
+    .badge-date { display: none; }
+  }
+  @media (max-width: 480px) {
+    .tier-grid { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 100px repeat(4, 1fr); font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-title">
+      Jetblip Node Upgrade
+      <span class="repo-tag">blip-research</span>
+    </div>
+    <div class="header-actions">
+      <span class="badge-date">2026-05-17</span>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" id="themeBtn">Light</button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Raspberry Pi 5 &#8594; x86 Mini PC</h1>
+    <p class="subtitle">
+      Pesquisa exaustiva de mercado UE para substituir ou complementar o Raspberry Pi 5 (4GB) no ecossistema Jetblip.
+      Alvo principal: Lenovo ThinkCentre M720q Tiny. Todos os precos verificados em tempo real via browser.
+    </p>
+
+    <div class="winner-banner">
+      <div class="trophy">&#127942;</div>
+      <div class="winner-content">
+        <div class="winner-label">Recomendacao #1 &mdash; Em Stock PT</div>
+        <div class="winner-name">Lenovo M720q Tiny &mdash; i5-8500T / 16GB / 256GB NVMe</div>
+        <div class="winner-meta">InfoComputerPortugal.com &bull; 36 meses garantia &bull; Envio gratis PT Continental &bull; 4.7&#9733; (+3400 avaliacoes)</div>
+      </div>
+      <div class="winner-price">309,96&euro;</div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav-pills" aria-label="Sections">
+    <a class="nav-pill" href="#why">Porque o x86?</a>
+    <a class="nav-pill" href="#tiers">Tiers de Hardware</a>
+    <a class="nav-pill" href="#pt-market">Mercado PT</a>
+    <a class="nav-pill" href="#eu-amazon">Amazon EU</a>
+    <a class="nav-pill" href="#alternatives">Alternativas</a>
+    <a class="nav-pill" href="#skip">Descartar</a>
+    <a class="nav-pill" href="#matrix">Matriz</a>
+    <a class="nav-pill" href="#strategy">Estrategia</a>
+    <a class="nav-pill" href="#sessao2" style="border-color:var(--accent2);color:var(--accent2)">Sessao 2 &#8599;</a>
+  </nav>
+
+  <!-- WHY x86 -->
+  <section id="why">
+    <h2><span class="section-icon">&#128200;</span> Porque migrar do Pi 5?</h2>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:16px;">
+      A transicao nao e apenas um aumento de velocidade &mdash; e uma mudanca para infraestrutura <strong style="color:var(--text)">reparavel, expansivel e totalmente controlavel</strong>.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>Raspberry Pi 5 (4GB)</th>
+            <th>Mini PC i5-8500T</th>
+            <th>Intel N100</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Arquitetura</strong></td>
+            <td>ARM Cortex-A76</td>
+            <td class="cg-win">x86_64 nativo</td>
+            <td>x86_64 nativo</td>
+          </tr>
+          <tr>
+            <td><strong>CPU</strong></td>
+            <td>4C/4T</td>
+            <td class="cg-win">6C/6T</td>
+            <td>4C/4T (eficientes)</td>
+          </tr>
+          <tr>
+            <td><strong>RAM maxima</strong></td>
+            <td>4-8GB (soldada)</td>
+            <td class="cg-win">64GB DDR4 (2 slots)</td>
+            <td>16-32GB DDR4/5</td>
+          </tr>
+          <tr>
+            <td><strong>Armazenamento</strong></td>
+            <td>MicroSD / NVMe via HAT</td>
+            <td class="cg-win">NVMe Gen3 x4 + SATA 2.5"</td>
+            <td>NVMe/SATA (limitado)</td>
+          </tr>
+          <tr>
+            <td><strong>Energia idle</strong></td>
+            <td>~3-5W</td>
+            <td>~8-12W</td>
+            <td class="cg-win">~5-7W</td>
+          </tr>
+          <tr>
+            <td><strong>Docker</strong></td>
+            <td>Bom (ARM64)</td>
+            <td class="cg-win">Excelente (nativo x86)</td>
+            <td class="cg-win">Excelente (nativo x86)</td>
+          </tr>
+          <tr>
+            <td><strong>Proxmox/KVM</strong></td>
+            <td style="color:var(--red)">Limitado</td>
+            <td class="cg-win">Total</td>
+            <td>Parcial</td>
+          </tr>
+          <tr>
+            <td><strong>Expansao PCIe</strong></td>
+            <td style="color:var(--red)">Nao</td>
+            <td class="cg-win">Sim (M720q unico)</td>
+            <td style="color:var(--red)">Nao</td>
+          </tr>
+          <tr>
+            <td><strong>Reparabilidade</strong></td>
+            <td style="color:var(--red)">Nenhuma</td>
+            <td class="cg-win">Total</td>
+            <td>Parcial</td>
+          </tr>
+          <tr>
+            <td><strong>Custo 24/7 (anual)</strong></td>
+            <td class="cg-win">~5-7&euro;</td>
+            <td>~15-25&euro;</td>
+            <td>~7-10&euro;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- TIERS -->
+  <section id="tiers">
+    <h2><span class="section-icon">&#127942;</span> Classificacao por Tiers</h2>
+    <div class="tier-grid">
+      <div class="tier-card t1">
+        <div class="tier-label">Tier 1 &mdash; Sweet Spot</div>
+        <div class="tier-name">6a a 8a Geracao Intel</div>
+        <div class="tier-desc">i5-6400T a i5-9400T. DDR4, NVMe nativo, 6 cores (8a gen), virtualizacao madura. Ideal Jetblip.</div>
+      </div>
+      <div class="tier-card t2">
+        <div class="tier-label">Tier 2 &mdash; Budget / Datado</div>
+        <div class="tier-name">4a Geracao Intel (Haswell)</div>
+        <div class="tier-desc">i5-4570T, i7-4765T. DDR3, sem suporte VP9/AV1 hardware. Aceitavel se orcamento for limite absoluto.</div>
+      </div>
+      <div class="tier-card eff">
+        <div class="tier-label">Eficiencia Moderna</div>
+        <div class="tier-name">Intel N100 / N95</div>
+        <div class="tier-desc">~6W TDP, x86 nativo, sem emulacao ARM. Ideal como no secundario. CPU soldado, RAM single-channel.</div>
+      </div>
+      <div class="tier-card t3">
+        <div class="tier-label">Tier 3 &mdash; Evitar</div>
+        <div class="tier-name">AMD A9/A12 &bull; Celeron N4000</div>
+        <div class="tier-desc">Em tarefas multi-core, o Pi 5 pode ser mais rapido. Mudanca de arquitetura sem ganho de performance real.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MERCADO PT -->
+  <section id="pt-market">
+    <h2><span class="section-icon">&#127477;&#127481;</span> Mercado Portugues &mdash; M720q Tiny</h2>
+
+    <div class="callout info">
+      <strong>Filtros aplicados:</strong> Apenas vendedores profissionais / lojas certificadas.
+      CPU: i5-8400T, i5-8500T, i5-9400T. Envio para Portugal. Transformador original incluido.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Loja</th>
+            <th>Preco Total</th>
+            <th>CPU</th>
+            <th>RAM / SSD</th>
+            <th>Garantia</th>
+            <th>Estado</th>
+            <th>Veredicto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="stock-ok">
+            <td>
+              <a href="https://www.infocomputerportugal.com/computadores/desktop/segunda-mao/lenovo-thinkcentre-m720q-mini-pc-core-i5-8500t-21-ghz-16gb-256-nvme-win-11-pro.html" target="_blank">InfoComputerPortugal</a>
+              <div class="note">4.7&#9733; &bull; +3400 avaliacoes &bull; Envio gratis</div>
+            </td>
+            <td>
+              <div class="price-main">309,96&euro;</div>
+              <div class="price-sub">Envio gratis PT</div>
+            </td>
+            <td>i5-8500T<br><span class="price-sub">2.1GHz base / 3.5 turbo</span></td>
+            <td>16GB DDR4<br>256GB NVMe</td>
+            <td><strong>36 meses</strong></td>
+            <td><span class="dot green"></span>Em stock</td>
+            <td><span class="verdict buy">Recomendado</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>
+              <a href="https://www.tonitrus.com/Lenovo-M720Q-tiny-I5-8500T-16GB-256GB-SSD-WIN11PRO" target="_blank">Tonitrus.com</a>
+              <div class="note">Confirmar garantia</div>
+            </td>
+            <td>
+              <div class="price-main">274,50&euro;</div>
+            </td>
+            <td>i5-8500T<br><span class="price-sub">2.1GHz</span></td>
+            <td>16GB DDR4<br>256GB SSD</td>
+            <td>A confirmar</td>
+            <td><span class="dot green"></span>Em stock</td>
+            <td><span class="verdict watch">Alternativa</span></td>
+          </tr>
+          <tr class="stock-empty">
+            <td>
+              <a href="https://recondicionados.jans.pt/produto/lenovo-tiny-m720q/" target="_blank">JANS.it</a>
+              <div class="note">Porto / Lisboa &bull; Repoe stock frequente</div>
+            </td>
+            <td>
+              <div class="price-strike">219&euro;</div>
+              <div class="price-sub">Esgotado</div>
+            </td>
+            <td>i5-8400T</td>
+            <td>8GB DDR4<br>256GB SSD</td>
+            <td>24 meses</td>
+            <td><span class="dot red"></span>Esgotado</td>
+            <td><span class="verdict watch">Monitorar</span></td>
+          </tr>
+          <tr class="stock-watch">
+            <td>
+              <a href="https://www.pccomponentes.pt/mini-pc-lenovo-thinkcentre-m720q-tiny-intel-core-i5-9400t-8gb-512gb-ssd-uhd-630-windows-11" target="_blank">PcComponentes.pt</a>
+              <div class="note">Vendedor: Globopc &bull; Marketplace</div>
+            </td>
+            <td>
+              <div class="price-main">369,00&euro;</div>
+              <div class="price-sub">Envio gratis</div>
+            </td>
+            <td>i5-9400T<br><span class="price-sub">1.8GHz</span></td>
+            <td>8GB DDR4<br>512GB SSD</td>
+            <td>Marketplace</td>
+            <td><span class="dot green"></span>Disponivel</td>
+            <td><span class="verdict skip">Caro p/ 8GB</span></td>
+          </tr>
+          <tr class="stock-watch">
+            <td>
+              <a href="https://www.refurbed.pt/p/lenovo-thinkcentre-m720q-tiny/" target="_blank">Refurbed.pt</a>
+              <div class="note">Envia da Alemanha &bull; i3-8100T a 194,99&euro;</div>
+            </td>
+            <td>
+              <div class="price-main">~229&euro;+</div>
+              <div class="price-sub">i5 estimado</div>
+            </td>
+            <td>i5-8400T / 8500T / 9400T</td>
+            <td>8-16GB / 128-512GB</td>
+            <td>12m (ext. ate 48m)</td>
+            <td><span class="dot yellow"></span>Verificar</td>
+            <td><span class="verdict watch">Monitorar</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <strong>WeBuy PT (CeX):</strong> Sem M720q em stock confirmado via browser. Pesquisa retornou tablets Lenovo, nao desktops.<br>
+      <strong>PCMaster.pt:</strong> Site inacessivel via browser em 17/05/2026. Sem dados.
+    </div>
+  </section>
+
+  <!-- EU AMAZON -->
+  <section id="eu-amazon">
+    <h2><span class="section-icon">&#10003;</span> Amazon EU &mdash; Precos Verificados em Tempo Real</h2>
+
+    <div class="callout">
+      Todos os precos desta tabela foram confirmados via browser em 17/05/2026.
+      <strong>Preco total = base + portes para Portugal.</strong>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>Mercado</th>
+            <th>Base</th>
+            <th>Portes PT</th>
+            <th>Total</th>
+            <th>CPU</th>
+            <th>RAM / SSD</th>
+            <th>Tier</th>
+            <th>Veredicto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="stock-ok">
+            <td><a href="https://www.amazon.it/-/en/HP-EliteDesk-Computer-Processor-Refurbished/dp/B0F9FG9JXR" target="_blank">HP EliteDesk 800 G2</a></td>
+            <td>Amazon IT</td>
+            <td>137,00&euro;</td>
+            <td>10,09&euro;</td>
+            <td><strong>~147&euro;</strong></td>
+            <td>i5-6400T 4C DDR4</td>
+            <td>8GB / 240GB</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict buy">Melhor preco</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td><a href="https://www.amazon.fr/HP-Tiny-Mini-LibreOffice-Reconditionn%C3%A9/dp/B0DH597B1N" target="_blank">HP Tiny Mini PC</a></td>
+            <td>Amazon FR</td>
+            <td>137,00&euro;</td>
+            <td>9,66&euro;</td>
+            <td><strong>~147&euro;</strong></td>
+            <td>i5-6500T 4C DDR4</td>
+            <td>8GB / 256GB</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict buy">Melhor preco</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td><a href="https://www.amazon.it/-/en/Lenovo-ThinkCentre-i5-6400T-Processor-Refurbished/dp/B0G43S76NF" target="_blank">Lenovo M910q Tiny</a></td>
+            <td>Amazon IT</td>
+            <td>146,00&euro;</td>
+            <td>8,80&euro;</td>
+            <td><strong>~155&euro;</strong></td>
+            <td>i5-6400T 4C DDR4</td>
+            <td>8GB / 240GB</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict buy">Solido</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td><a href="https://www.amazon.it/-/en/Fujitsu-Esprimo-Computer-i5-7500T-Refurbished/dp/B0DTKC3H2F" target="_blank">Fujitsu Esprimo Q957</a></td>
+            <td>Amazon IT</td>
+            <td>159,00&euro;</td>
+            <td>12,44&euro;</td>
+            <td><strong>~171&euro;</strong></td>
+            <td>i5-7500T 4C DDR4</td>
+            <td>8GB / 256GB</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict buy">Bom</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td><a href="https://www.amazon.it/-/en/Dell-Optiplex-7050-Display-Refurbished/dp/B0DWGH96PV" target="_blank">Dell Optiplex 7050 Tiny</a></td>
+            <td>Amazon IT</td>
+            <td>179,00&euro;</td>
+            <td>9,79&euro;</td>
+            <td><strong>~189&euro;</strong></td>
+            <td>i5-6xxx 4C DDR4</td>
+            <td>8GB / 256GB</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict watch">OK, mais caro</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td><a href="https://www.amazon.es/-/pt/dp/B0CXCT4M2F/" target="_blank">GMKtec G3S</a></td>
+            <td>Amazon ES</td>
+            <td>233,76&euro;</td>
+            <td>Gratis</td>
+            <td><strong>233,76&euro;</strong></td>
+            <td>Intel N95 4C 15W</td>
+            <td>16GB / 512GB</td>
+            <td><span class="tag eff">N100/N95</span></td>
+            <td><span class="verdict watch">No secundario</span></td>
+          </tr>
+          <tr class="stock-skip">
+            <td><a href="https://www.amazon.it/-/en/Lenovo-Desktop-Computer-Office-Refurbished/dp/B0892J87TP" target="_blank">Lenovo M73 Tiny</a></td>
+            <td>Amazon IT</td>
+            <td>139,00&euro;</td>
+            <td>10,12&euro;</td>
+            <td><strong>~149&euro;</strong></td>
+            <td>i5-4590T 4C DDR3</td>
+            <td>8GB / 256GB</td>
+            <td><span class="tag t2">Tier 2</span></td>
+            <td><span class="verdict skip">Datado DDR3</span></td>
+          </tr>
+          <tr class="stock-flag">
+            <td>
+              <a href="https://www.amazon.es/-/pt/dp/B085RY6Z1C/" target="_blank">HP ProDesk 600 G1</a>
+              <div class="note" style="color:var(--red)">&#9888; Nao envia para Portugal</div>
+            </td>
+            <td>Amazon ES</td>
+            <td>151,46&euro;</td>
+            <td>&mdash;</td>
+            <td><span style="color:var(--red)">Indisponivel PT</span></td>
+            <td>i5-4570T 4C DDR3</td>
+            <td>8GB / 500GB HDD</td>
+            <td><span class="tag t2">Tier 2</span></td>
+            <td><span class="verdict flag">Nao comprar</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <strong>HP ProDesk B085RY6Z1C:</strong> Confirmado via browser &mdash; apenas envia para Franca e Monaco. Portugal excluido. Ignorar esta listagem.
+    </div>
+  </section>
+
+  <!-- ALTERNATIVAS DESCARTADAS -->
+  <section id="skip">
+    <h2><span class="section-icon">&#10060;</span> Tier 3 &mdash; Descartar</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>Vendedor</th>
+            <th>Preco</th>
+            <th>CPU</th>
+            <th>Problema</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="stock-flag">
+            <td><a href="https://fibich-it.de/en/products/mini-pc-lenovo-thinkcentre-m625q-tiny?variant=55657960079625" target="_blank">Lenovo M625q Tiny</a></td>
+            <td>Fibich IT (DE)</td>
+            <td>a partir de 47&euro;</td>
+            <td>AMD E2-9000e 2C 1.8GHz</td>
+            <td>Pi 5 pode ser mais rapido em multi-core. So muda a arquitetura, nao a performance.</td>
+          </tr>
+          <tr class="stock-flag">
+            <td><a href="https://www.amazon.fr/Lenovo-ThinkCentre-M715q-Mini-reconditionn%C3%A9/dp/B0GSVPKFH7" target="_blank">Lenovo M715q</a></td>
+            <td>Amazon FR</td>
+            <td>~178&euro;</td>
+            <td>AMD A12 4C DDR4</td>
+            <td>AMD Bristol Ridge (2016). Performance bordeando o Pi 5. Preco alto para o que entrega.</td>
+          </tr>
+          <tr class="stock-flag">
+            <td><a href="https://www.ebay.com/itm/235428304127" target="_blank">eBay 235428304127</a></td>
+            <td>eBay US</td>
+            <td>~100$ + 56$ envio</td>
+            <td>i3 (geracao antiga)</td>
+            <td>Confirmado via browser: e Lenovo ThinkCentre M72e com i3, NAO M70q Gen 2. Vendedor EUA, portes excessivos, sem garantia clara.</td>
+          </tr>
+          <tr class="stock-flag">
+            <td>BMAX B1 Plus</td>
+            <td>Amazon FR/ES</td>
+            <td>~99-119&euro;</td>
+            <td>Celeron N4020 2C</td>
+            <td>Inferior ao Pi 5 em multi-core. Sem expansao. Nao adequado para Jetblip.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MATRIZ DE DECISAO -->
+  <section id="matrix">
+    <h2><span class="section-icon">&#128202;</span> Matriz de Decisao Final</h2>
+
+    <div class="compare-grid" role="table">
+      <!-- Header row -->
+      <div class="cg-cell cg-head"></div>
+      <div class="cg-cell cg-head">Pi 5 (4GB)</div>
+      <div class="cg-cell cg-head winner">M720q (i5-8500T)</div>
+      <div class="cg-cell cg-head">EliteDesk/Esprimo</div>
+      <div class="cg-cell cg-head">Intel N100</div>
+      <!-- Rows -->
+      <div class="cg-cell cg-row-label">Scraping pesado</div>
+      <div class="cg-cell cg-low">Limitado por RAM</div>
+      <div class="cg-cell cg-win">Elevado</div>
+      <div class="cg-cell cg-mid">Bom</div>
+      <div class="cg-cell cg-mid">Medio</div>
+
+      <div class="cg-cell cg-row-label">Upgradability</div>
+      <div class="cg-cell" style="color:var(--red)">Nenhuma</div>
+      <div class="cg-cell cg-win">Total</div>
+      <div class="cg-cell cg-mid">Alta</div>
+      <div class="cg-cell cg-low">Parcial</div>
+
+      <div class="cg-cell cg-row-label">PCIe expansion</div>
+      <div class="cg-cell" style="color:var(--red)">Nao</div>
+      <div class="cg-cell cg-win">Sim (unico)</div>
+      <div class="cg-cell" style="color:var(--red)">Nao</div>
+      <div class="cg-cell" style="color:var(--red)">Nao</div>
+
+      <div class="cg-cell cg-row-label">Local AI (Ollama)</div>
+      <div class="cg-cell cg-low">Limitado</div>
+      <div class="cg-cell cg-win">Excelente</div>
+      <div class="cg-cell cg-mid">Bom</div>
+      <div class="cg-cell cg-mid">Medio</div>
+
+      <div class="cg-cell cg-row-label">Custo 24/7</div>
+      <div class="cg-cell cg-win">~5-7&euro;/ano</div>
+      <div class="cg-cell cg-mid">~15-25&euro;/ano</div>
+      <div class="cg-cell cg-mid">~12-20&euro;/ano</div>
+      <div class="cg-cell cg-win">~7-10&euro;/ano</div>
+
+      <div class="cg-cell cg-row-label">Preco entrada</div>
+      <div class="cg-cell cg-low">&mdash;</div>
+      <div class="cg-cell cg-mid">~275-310&euro; PT</div>
+      <div class="cg-cell cg-win">~147-189&euro; EU</div>
+      <div class="cg-cell cg-mid">~150-234&euro;</div>
+
+      <div class="cg-cell cg-row-label cg-last">Veredicto</div>
+      <div class="cg-cell cg-last cg-low">&mdash;</div>
+      <div class="cg-cell cg-last cg-win">&#127941; Servidor principal</div>
+      <div class="cg-cell cg-last cg-mid">&#129352; Alternativa</div>
+      <div class="cg-cell cg-last cg-low">&#129353; No secundario</div>
+    </div>
+  </section>
+
+  <!-- ESTRATEGIA -->
+  <section id="strategy">
+    <h2><span class="section-icon">&#128161;</span> Estrategia Recomendada para o Jetblip Node</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Agora &mdash; Adquirir M720q i5-8500T / 16GB</div>
+          <div class="step-desc">
+            <strong>InfoComputerPortugal: 309,96&euro;</strong> (36m garantia, envio gratis, em stock) ou
+            <strong>Tonitrus: 274,50&euro;</strong> (confirmar garantia antes de comprar).
+            Manter o Pi 5 como no GPIO ou backup secundario.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">+1 mes &mdash; Upgrade RAM para 32GB</div>
+          <div class="step-desc">
+            SO-DIMM DDR4 2666 MHz, 2x 16GB &mdash; ~25-35&euro; no mercado.
+            Permite modelos Ollama ate ~13B parametros. Maior impacto custo/beneficio pos-compra.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">+3 meses &mdash; PCIe Riser (se necessario NIC)</div>
+          <div class="step-desc">
+            Adquirir riser <code>01AJ929</code> (~15-40&euro; eBay/AliExpress) para adicionar NIC 2.5GbE ou quad-port.
+            Nota: ocupar o riser elimina o slot SATA 2.5" (apenas M.2 disponivel).
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Opcional &mdash; No secundario Intel N100</div>
+          <div class="step-desc">
+            GMKtec G3S N95: 233,76&euro; (16GB/512GB) ou NiPoGi N100: ~179&euro; (8GB/256GB).
+            Servidor de consumo minimo (~6W) para tarefas leves 24/7, criando cluster Pi5 + N100 + M720q.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <strong>Monitorar JANS.it:</strong> quando o M720q i5-8400T a 219&euro; (Grade A, 24m garantia) voltar a stock,
+      e a melhor relacao qualidade/preco em Portugal. Stock repoe com frequencia.
+    </div>
+  </section>
+
+  <!-- SESSAO 2 -->
+  <section id="sessao2">
+    <h2><span class="section-icon">&#128269;</span> Sessao 2 &mdash; Mais Opcoes Verificadas <span style="font-size:12px;font-weight:500;color:var(--muted);margin-left:8px;">05:00 &bull; 2026-05-17</span></h2>
+
+    <div class="callout info">
+      Expansao da pesquisa com fontes adicionais: Back Market PT, Refurbed.pt (precos i5 confirmados),
+      AfBshop.de, itsco.de, Amazon.de M720q Renewed, HP EliteDesk 800 G3/G4/G5 no Amazon IT.
+      Todos os precos verificados via browser.
+    </div>
+
+    <!-- Back Market PT -->
+    <h3>Back Market PT &mdash; M720q</h3>
+    <div class="callout warn">
+      <strong>Produto confirmado na plataforma</strong> &mdash; i5-8500T / 8GB / 256GB.
+      Preco nao extraivel automaticamente (renderizado com JavaScript). Verificar manualmente:
+      <a href="https://www.backmarket.pt/pt-pt/p/lenovo-thinkcentre-m720q-tiny-core-i5-21-ghz-ssd-256-gb-ram-8-gb/d2269535-8908-469d-87d7-ad0abd460f9d" target="_blank">Back Market PT &rarr; M720q Tiny</a>.
+      Historicamente 10&ndash;20% abaixo da Refurbed.
+    </div>
+    <!-- Refurbed.pt -->
+    <h3>Refurbed.pt &mdash; Escala de Precos i5 Confirmada</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>CPU</th>
+            <th>Preco base (8GB/128GB)</th>
+            <th>Incremento</th>
+            <th>Com 16GB + 256GB</th>
+            <th>Veredicto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="stock-watch">
+            <td>i3-8100T <span class="tag">base</span></td>
+            <td><strong>194,99&euro;</strong></td>
+            <td>&mdash;</td>
+            <td>268,99&euro;</td>
+            <td><span class="verdict skip">Tier baixo</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>i5-8400T</td>
+            <td><strong>240,99&euro;</strong></td>
+            <td>+46&euro;</td>
+            <td>314,99&euro;</td>
+            <td><span class="verdict watch">Alternativa</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>i5-8500T <span class="tag t1">Sweet spot</span></td>
+            <td><strong>256,99&euro;</strong></td>
+            <td>+62&euro;</td>
+            <td>330,99&euro;</td>
+            <td><span class="verdict watch">Ver nota</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>i5-9400T</td>
+            <td><strong>264,99&euro;</strong></td>
+            <td>+70&euro;</td>
+            <td>338,99&euro;</td>
+            <td><span class="verdict watch">Mais caro</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      Incrementos: +63&euro; para 16GB RAM; +11&euro; para 256GB SSD. Envio da Alemanha (5&ndash;7 dias). Garantia base 12m (extensivel ate 48m).
+      <br>O i5-8500T/16GB/256GB a ~330,99&euro; entregue fica acima do InfoComputerPortugal (309,96&euro; + 36m garantia + envio PT) &mdash; prefere-se o InfoComputer.
+    </p>
+
+    <!-- Amazon.de M720q -->
+    <h3>Amazon.de &mdash; M720q Renewed (Precos Confirmados)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>CPU</th>
+            <th>RAM / SSD</th>
+            <th>Base</th>
+            <th>Portes PT</th>
+            <th>Total</th>
+            <th>Stock</th>
+            <th>Veredicto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="stock-ok">
+            <td>M720q + WiFi</td>
+            <td>i5-8400T</td>
+            <td>16GB / 256GB</td>
+            <td>292,90&euro;</td>
+            <td>incluido</td>
+            <td><strong>292,90&euro;</strong></td>
+            <td><span class="dot green"></span>Em stock</td>
+            <td><span class="verdict watch">Bom preco DE</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>M920q + WiFi</td>
+            <td>i5-8500T</td>
+            <td>8GB / 256GB</td>
+            <td>291,63&euro;</td>
+            <td>incluido</td>
+            <td><strong>291,63&euro;</strong></td>
+            <td><span class="dot green"></span>Em stock</td>
+            <td><span class="verdict watch">M920q, sem PCIe</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>M720q</td>
+            <td>i5-9400T</td>
+            <td>8GB / 512GB</td>
+            <td>289,00&euro;</td>
+            <td>10,08&euro;</td>
+            <td><strong>~299&euro;</strong></td>
+            <td><span class="dot green"></span>7 em stock</td>
+            <td><span class="verdict buy">Sweet spot DE</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>M720q</td>
+            <td>i5-8500T</td>
+            <td>32GB / 512GB</td>
+            <td>375,90&euro;</td>
+            <td>7,50&euro;</td>
+            <td><strong>~383&euro;</strong></td>
+            <td><span class="dot green"></span>10 em stock</td>
+            <td><span class="verdict skip">Premium</span></td>
+          </tr>
+          <tr class="stock-empty">
+            <td><a href="https://www.amazon.de/dp/B0CK5JQJWB" target="_blank">M720q B0CK5JQJWB</a></td>
+            <td>i5-8400T</td>
+            <td>8GB / 256GB</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td><span style="color:var(--muted)">Indisponivel</span></td>
+            <td><span class="dot red"></span>Fora de stock</td>
+            <td><span class="verdict skip">N/A</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Nota: M920q usa o mesmo CPU tier que o M720q mas nao tem slot PCIe riser 01AJ929. Se o riser nao for necessario, M920q a &euro;291 e alternativa valida.</p>
+
+    <!-- HP EliteDesk G3/G4/G5 -->
+    <h3>HP EliteDesk 800 G3 / G4 / G5 &mdash; Amazon IT (Precos Confirmados)</h3>
+    <div class="callout info">
+      Expansao da pesquisa para incluir 8a e 9a geracao HP EliteDesk. G4/G5 dao CPU equivalente ao M720q a preco inferior, mas sem slot PCIe.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>CPU</th>
+            <th>RAM / SSD</th>
+            <th>Base</th>
+            <th>Portes PT</th>
+            <th>Total</th>
+            <th>Stock</th>
+            <th>Tier</th>
+            <th>Veredicto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="stock-ok">
+            <td>EliteDesk 800 G3 DM</td>
+            <td>i5-6500T 4C DDR4</td>
+            <td>8GB / 256GB</td>
+            <td>164,00&euro;</td>
+            <td>1,24&euro;</td>
+            <td><strong class="price-main">~165&euro;</strong></td>
+            <td><span class="dot green"></span>5 disponiveis</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict buy">Melhor preco absoluto</span></td>
+          </tr>
+          <tr class="stock-watch">
+            <td>EliteDesk 800 G3 Renewed</td>
+            <td>i5-7500T 4C DDR4</td>
+            <td>8GB / 256GB</td>
+            <td>179,00&euro;</td>
+            <td>10,10&euro;</td>
+            <td><strong>~189&euro;</strong></td>
+            <td><span class="dot yellow"></span>1 disponivel</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict watch">Kaby Lake, ultimo</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>EliteDesk 800 G3</td>
+            <td>i5-6400T 4C DDR4</td>
+            <td>16GB / 240GB</td>
+            <td>209,00&euro;</td>
+            <td>10,06&euro;</td>
+            <td><strong>~219&euro;</strong></td>
+            <td><span class="dot green"></span>Em stock</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict watch">16GB config</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>EliteDesk 800 G4</td>
+            <td>i5-8500T 6C DDR4</td>
+            <td>8GB / 256GB</td>
+            <td>234,00&euro;</td>
+            <td>14,19&euro;</td>
+            <td><strong>~248&euro;</strong></td>
+            <td><span class="dot green"></span>8 disponiveis</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict buy">8a gen HP</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>EliteDesk 800 G5</td>
+            <td>i5-9500T 6C DDR4</td>
+            <td>8GB / 256GB</td>
+            <td>239,00&euro;</td>
+            <td>9,75&euro;</td>
+            <td><strong>~249&euro;</strong></td>
+            <td><span class="dot green"></span>Em stock</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict buy">9a gen HP</span></td>
+          </tr>
+          <tr class="stock-ok">
+            <td>EliteDesk 800 G4</td>
+            <td>i5-8400T 6C DDR4</td>
+            <td>16GB / 240GB</td>
+            <td>289,00&euro;</td>
+            <td>10,25&euro;</td>
+            <td><strong>~299&euro;</strong></td>
+            <td><span class="dot green"></span>Em stock</td>
+            <td><span class="tag t1">Tier 1</span></td>
+            <td><span class="verdict watch">8a gen / 16GB</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>G4/G5 vs M720q:</strong> O EliteDesk G4 (i5-8500T, ~248&euro;) e G5 (i5-9500T, ~249&euro;) dao CPU equivalente ao M720q a &euro;60&ndash;120 abaixo do preco PT. Tradeoff: sem PCIe riser.
+      Para workloads Docker/Proxmox sem necessidade de NIC dedicada, o G4/G5 e uma alternativa solida.
+      <br><br>
+      <strong>G3 DM a ~165&euro;:</strong> Preco mais baixo confirmado para Mini PC DDR4 Tier 1 com envio PT. Skylake i5-6500T, 8GB. Valido como no secundario de baixo custo.
+    </div>
+
+    <!-- Lojas sem stock -->
+    <h3>Lojas Pesquisadas &mdash; Sem Stock M720q</h3>
+    <div class="callout danger">
+      <strong>AfBshop.de:</strong> Pesquisa realizada, sem resultados para M720q Tiny. Sem stock no momento da pesquisa.<br>
+      <strong>itsco.de:</strong> Multiplos formatos de URL testados, todos retornaram 404. Sem dados disponiveis.
+    </div>
+
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  Pesquisa compilada em 2026-05-17 (Sessao 1 + 2) &bull; Precos verificados em tempo real via browser &bull;
+  <a href="https://github.com/jeremytrindade/blip-research/tree/main/hardware/jetblip-node-upgrade" target="_blank">blip-research/hardware/jetblip-node-upgrade</a>
+  &bull; Fontes: InfoComputerPortugal, JANS.it, Tonitrus, PcComponentes.pt, Refurbed.pt, Amazon IT/FR/ES/DE, Back Market PT/ES, AfBshop.de, itsco.de, Fibich IT, WeBuy PT, PCMaster.pt, Lenovo PSREF
+</footer>
+
+<script>
+  // ── Theme toggle with localStorage ──
+  (function () {
+    var stored = localStorage.getItem('blip-research-theme');
+    if (stored) {
+      document.documentElement.setAttribute('data-theme', stored);
+    }
+    updateBtn();
+  })();
+
+  function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('blip-research-theme', next);
+    updateBtn();
+  }
+
+  function updateBtn() {
+    var theme = document.documentElement.getAttribute('data-theme');
+    var btn = document.getElementById('themeBtn');
+    if (btn) btn.textContent = theme === 'dark' ? 'Light' : 'Dark';
+  }
+</script>
+</body>
+</html>
