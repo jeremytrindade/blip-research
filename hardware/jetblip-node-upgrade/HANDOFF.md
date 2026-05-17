@@ -181,10 +181,13 @@ Nao pagar diferencial de preco por "com Win11" vs "sem OS" no mercado refurbishe
 D:\jetblip\github\blip-research\
 └── hardware\
     └── jetblip-node-upgrade\
-        ├── 20260517-lenovo-m720q-eu.md     <- investigacao completa (394 linhas)
-        ├── 20260517-lenovo-m720q-eu.html   <- versao HTML com design (1594 linhas)
-        └── HANDOFF.md                      <- este ficheiro
+        ├── 20260517-lenovo-m720q-eu.md        <- investigacao completa (485 linhas, 4 sessoes)
+        ├── 20260517-lenovo-m720q-eu.v01.html  <- HTML companion v01 (ver Rule #5 de RULES.md)
+        └── HANDOFF.md                         <- este ficheiro
 ```
+
+**Nota sobre HTML versioning (Rule #5):** O ficheiro HTML usa o padrao `YYYYMMDD-topic-slug.vNN.html`.
+Nunca sobreescrever — incrementar NN para cada nova versao. Ver RULES.md Rule #5.
 
 ---
 
@@ -198,10 +201,17 @@ D:\jetblip\github\blip-research\
 | `60af676` | Adicao do HANDOFF.md |
 | `76b03fe` | OS especificado: Ubuntu 24.04.4 LTS |
 | `(atual)` | Sessao 4: Back Market PT confirmado, riser PCIe precos, RAM precos corretos |
+| `(atual)` | RULES.md: Rule #5 HTML companion, Rule #6 trigger. README: frases de inicio de sessao |
 
 ---
 
-## 8. Problemas Conhecidos (desta sessao bugged)
+## 8. Regras Criticas (ler antes de comecar)
+
+- **HTML companion obrigatorio (Rule #5):** Cada sessao de pesquisa concluida exige um ficheiro HTML atualizado com versao incrementada (`vNN`). Ver RULES.md.
+- **Trigger "use blip-research" (Rule #6):** Quando o utilizador diz "usa o blip-research e pesquisa X", o agente deve: ler HANDOFF.md → ler ficheiros da Secao 1 → seguir todas as RULES.md → produzir HTML companion no final.
+- **Frases de inicio de sessao:** Ver README.md para versao curta e versao extendida.
+
+## 9. Problemas Conhecidos (desta sessao bugged)
 
 Para o proximo agente evitar os mesmos problemas:
 
