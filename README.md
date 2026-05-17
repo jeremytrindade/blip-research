@@ -16,16 +16,16 @@ Lê o `README.md` e `RULES.md` de `blip-research`. Com base na tarefa pedida pel
 ```
 Antes de qualquer trabalho em `blip-research`, segue esta sequência:
 
-1. Verificar pasta — confirma se `blip-research` está disponível no workspace. Se não estiver, pede o GitHub PAT ao utilizador e faz git clone com esse PAT. Se já existir, faz git pull.
+1. Verificar pasta — confirma se `blip-research` está disponível no workspace. Se não estiver, pede o GitHub PAT ao utilizador e faz git clone com esse PAT. Se já existir, faz git pull. Se git pull falhar por restrição de proxy/rede, não avances com ficheiros locais — busca imediatamente README.md e RULES.md em raw.githubusercontent.com/jeremytrindade/blip-research/main/ via browser Chrome e usa esses como versão autoritativa.
 2. Ler por ordem — README.md primeiro (estrutura e índice), depois RULES.md (regras operacionais para a sessão).
 3. Identificar subpasta — com base na tarefa descrita pelo utilizador, determina a subpasta relevante (hardware/, infra/, ou outra). Se não for óbvio, pergunta ao utilizador antes de avançar.
 4. Ler HANDOFF.md — se existir na subpasta identificada, lê-o e confirma as perguntas de verificação que contiver antes de avançar. Se não existir, continua sem bloquear.
-5. Regras ativas — mantém as regras do RULES.md em memória durante toda a sessão: git CLI obrigatório, estrutura de ficheiros YYYYMMDD-topic-slug.md, README atualizado no mesmo commit, HTML companion obrigatório (Rule #5), fontes secundárias em ## Alternative Context.
+5. Regras ativas — mantém as regras do RULES.md em memória durante toda a sessão. Antes de avançar, confirma que encontraste pelo menos 8 regras e que a Regra #5 existe — se não, para imediatamente e busca os ficheiros via browser Chrome porque estás a trabalhar com dados desatualizados.
 ```
 
 ### Alternativa com paths diretas (mais robusta)
 ```
-Lê `/github/blip-research/README.md` e `/github/blip-research/RULES.md`. Se houver `HANDOFF.md` na subpasta da tarefa atual, lê-o também. Mantém as regras do `RULES.md` ativas durante a sessão.
+Lê `/github/blip-research/README.md` e `/github/blip-research/RULES.md`. Se houver `HANDOFF.md` na subpasta da tarefa atual, lê-o também. Mantém as regras do `RULES.md` ativas durante a sessão. Antes de avançar, confirma que encontraste pelo menos 8 regras e que a Regra #5 existe — se não, para imediatamente porque estás a trabalhar com dados desatualizados.
 ```
 
 ---
@@ -47,8 +47,6 @@ Lê `/github/blip-research/README.md` e `/github/blip-research/RULES.md`. Se hou
 ## File Naming Conventions
 
 ```
-YYYYMMDD-topic-slug.md          ← research notes (all sessions appended here)
-YYYYMMDD-topic-slug.vNN.html    ← HTML companion (new file each version, NN = 01, 02…)
+YYYYMMDD-topic-slug.md          + research notes (all sessions appended here)
+YYYYMMDD-topic-slug.vNN.html    + HTML companion (new file each version, NN = 01, 02...)
 ```
-
-See `RULES.md` for full rules including HTML companion requirements (Rule #5) and the "use blip-research" trigger behaviour (Rule #6).
