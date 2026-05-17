@@ -20,7 +20,7 @@ Antes de qualquer trabalho em `blip-research`, segue esta sequência:
 2. Ler por ordem — README.md primeiro (estrutura e índice), depois RULES.md (regras operacionais para a sessão).
 3. Identificar subpasta — com base na tarefa descrita pelo utilizador, determina a subpasta relevante (hardware/, infra/, ou outra). Se não for óbvio, pergunta ao utilizador antes de avançar.
 4. Ler HANDOFF.md — se existir na subpasta identificada, lê-o e confirma as perguntas de verificação que contiver antes de avançar. Se não existir, continua sem bloquear.
-5. Regras ativas — mantém as regras do RULES.md em memória durante toda a sessão. Antes de avançar, confirma que encontraste pelo menos 8 regras e que a Regra #5 existe — se não, para imediatamente e busca os ficheiros via browser Chrome porque estás a trabalhar com dados desatualizados.
+5. Regras ativas — mantém as regras do RULES.md em memória durante toda a sessão. Antes de avançar, confirma que encontraste pelo menos 9 regras e que a Regra #5 existe — se não, para imediatamente e busca os ficheiros via browser Chrome porque estás a trabalhar com dados desatualizados.
 
 Comportamentos obrigatórios independentes do RULES.md (aplicam-se sempre, mesmo que os ficheiros não carreguem):
 - Nunca perguntar "posso avançar?" ou "devo continuar?" — anuncia o que vais fazer e faz imediatamente. Silêncio do utilizador = aprovação.
@@ -30,7 +30,7 @@ Comportamentos obrigatórios independentes do RULES.md (aplicam-se sempre, mesmo
 
 ### Alternativa com paths diretas (mais robusta)
 ```
-Lê `/github/blip-research/README.md` e `/github/blip-research/RULES.md`. Se houver `HANDOFF.md` na subpasta da tarefa atual, lê-o também. Mantém as regras do `RULES.md` ativas durante a sessão. Antes de avançar, confirma que encontraste pelo menos 8 regras e que a Regra #5 existe — se não, para imediatamente porque estás a trabalhar com dados desatualizados. Comportamentos sempre ativos: nunca pedir confirmação antes de agir (silêncio = aprovação); usar browser Chrome como fallback se qualquer ficheiro falhar.
+Lê `/github/blip-research/README.md` e `/github/blip-research/RULES.md`. Se houver `HANDOFF.md` na subpasta da tarefa atual, lê-o também. Mantém as regras do `RULES.md` ativas durante a sessão. Antes de avançar, confirma que encontraste pelo menos 9 regras e que a Regra #5 existe — se não, para imediatamente porque estás a trabalhar com dados desatualizados. Comportamentos sempre ativos: nunca pedir confirmação antes de agir (silêncio = aprovação); usar browser Chrome como fallback se qualquer ficheiro falhar.
 ```
 
 ---
