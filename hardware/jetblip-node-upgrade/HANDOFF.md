@@ -151,14 +151,27 @@ Nao pagar diferencial de preco por "com Win11" vs "sem OS" no mercado refurbishe
 
 ---
 
+---
+### Sessao 4 — Componentes de Upgrade + Back Market PT confirmado
+- Back Market PT: M720q i5-8500T/8GB/256GB **€249,37** confirmado via Chrome (condicao Excelente, 24m garantia, envio gratis)
+- eBay.es / eBay.de (M720q completo): IGNORAR — todos vendedores EUA, portes €70–140
+- PCIe Riser 01AJ929 (eBay, China): **€14,88–17** envio gratis (biz360d, heretom-auction, hk-estreet)
+- PCIe Riser 01AJ940 (eBay, China): **€9,32–11** envio gratis (91fairdeals, diyinbox-us, e-city2008)
+- RAM upgrade correcao: estimativa €25–35 errada. Real: +1x16GB ~€110 (se slot livre), kit 2x16GB ~€213, 1x32GB ~€247
+
+---
+
 ## 5. Proximos Passos
 
 - [ ] Monitorizar **enter-leszno** (eBay.de) para M720q i5-8500T < €200 com envio gratis EU
 - [ ] Verificar stock **JANS.it** M720q i5-8400T €219 (Grade A, 24m garantia, PT)
+- [ ] Verificar stock **Back Market PT** M720q i5-8500T (atualmente €249,37 / 8GB / Excelente)
 - [ ] Decidir: v2.0 exato (M720q ~€232–294) ou budget <€200 (M910q/M710q da Lista 1)
+- [ ] Apos compra: abrir M720q e verificar config RAM (1x16GB slot livre vs 2x8GB) antes de comprar upgrade
+- [ ] RAM upgrade: +1x16GB ~€110 (se slot livre) ou kit 2x16GB ~€213 (se 2x8GB) — Amazon.es
+- [ ] Riser PCIe: 01AJ929 a ~€15 (biz360d/heretom-auction eBay.es, China, 2–4 semanas)
 - [ ] Apos compra: instalar Ubuntu Server 24.04.4 LTS + migrar stack do RPi5
 - [ ] Reutilizar RPi5 4GB no proximo projeto v1.0 (re-use principle sovereign-lab)
-- [ ] Upgrade RAM para 16–32GB DDR4 SO-DIMM (M720q suporta ate 64GB)
 
 ---
 
@@ -184,6 +197,7 @@ D:\jetblip\github\blip-research\
 | `0676487` | Sessao 3: Lista 1 (<200EUR) + Lista 2 (top 10 specs) |
 | `60af676` | Adicao do HANDOFF.md |
 | `76b03fe` | OS especificado: Ubuntu 24.04.4 LTS |
+| `(atual)` | Sessao 4: Back Market PT confirmado, riser PCIe precos, RAM precos corretos |
 
 ---
 
