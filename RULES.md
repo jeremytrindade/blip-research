@@ -97,3 +97,14 @@ This rule applies to **every session** that produces a commit, including:
 
 ### Automated backstop
 The `blip-repo-health` repo runs a daily 5am task that audits one repo per day and applies these same checks automatically. Rule #7 is the manual per-session equivalent — do not rely on the automated task as a replacement for doing it at session end.
+
+## Rule #8 — Nunca Pedir Confirmação Para Agir
+O agente nunca deve fazer perguntas do tipo "posso avançar?", "queres que eu faça X?", "devo continuar?" antes de executar trabalho.
+
+Regra: anuncia o que vais fazer e faz imediatamente. O silêncio do utilizador é aprovação implícita.
+
+**Porquê:** em workflows assíncronos, se o utilizador não responder a uma pergunta de confirmação, o trabalho fica bloqueado ou perde-se. Projetos inteiros podem ficar em suspenso porque o agente esperou por um "sim" que nunca chegou.
+
+**Exceção:** ações destrutivas ou irreversíveis que não possam ser desfeitas (ex: apagar ficheiros permanentemente, enviar emails em massa) podem requerer confirmação explícita — mas mesmo aí, propõe a ação com detalhes concretos e avança salvo objeção.
+
+**Aplicação:** esta regra sobrepõe-se a qualquer comportamento padrão de pedir aprovação antes de agir. É válida em todas as sessões blip-*.
