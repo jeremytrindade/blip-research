@@ -25,7 +25,7 @@ Antes de qualquer trabalho em `blip-research`, segue esta sequência:
 
 ### Alternativa com paths diretas (mais robusta)
 ```
-read /github/blip-research/README.md e /github/blip-research/RULES.md. Se houver HANDOFF.md na subpasta da tarefa atual, lê-o também. Mantém as regras do RULES.md ativas durante a sessão.
+Lê `/github/blip-research/README.md` e `/github/blip-research/RULES.md`. Se houver `HANDOFF.md` na subpasta da tarefa atual, lê-o também. Mantém as regras do `RULES.md` ativas durante a sessão.
 ```
 
 ---
