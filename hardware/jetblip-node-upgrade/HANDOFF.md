@@ -30,9 +30,9 @@ git clone https://ghp_<PAT>@github.com/jeremytrindade/blip-research.git /tmp/bli
 ## 2. Contexto do Projeto
 
 ### Setup Atual (v1.0)
-- Hardware: **Raspberry Pi 5 4GB** a correr Ubuntu Server
+- Hardware: **Raspberry Pi 5 4GB** a correr Ubuntu Server 24.04.4 LTS
 - Stack: Docker + Portainer, automacoes domesticas, homelab
-- OS alvo para qualquer nova maquina: **Ubuntu Server 22.04/24.04 LTS** (Windows e irrelevante, a maquina e sempre limpa na chegada)
+- OS alvo para qualquer nova maquina: **Ubuntu Server 24.04.4 LTS (Noble Numbat)** (Windows e irrelevante, a maquina e sempre limpa na chegada)
 
 ### Objetivo (v2.0)
 - Substituir/complementar o RPi5 com um **Mini PC x86_64**
@@ -110,7 +110,7 @@ v3.0 = cluster / scale
 
 Stack previsto para a v2.0:
 ```
-Ubuntu Server 24.04 LTS
+Ubuntu Server 24.04.4 LTS
 ├── Docker + Portainer
 ├── Proxmox VE (opcional, se virtualizar varias VMs)
 ├── Ollama (iGPU via vaapi/OpenCL)
@@ -124,7 +124,7 @@ Ubuntu Server 24.04 LTS
 - [ ] Monitorizar enter-leszno (eBay.de) para M720q i5-8500T < €200
 - [ ] Verificar stock JANS.it M720q i5-8400T a €219 (Grade A, 24m garantia, Portugal)
 - [ ] Decidir entre v2.0 exato (M720q ~€232–294) ou budget <€200 (M910q/M710q)
-- [ ] Apos compra: Ubuntu Server 24.04 LTS + Docker + migrar stack do RPi5
+- [ ] Apos compra: Ubuntu Server 24.04.4 LTS + Docker + migrar stack do RPi5
 - [ ] Reutilizar RPi5 4GB para proximo projeto v1.0 (sovereign-lab re-use principle)
 - [ ] Eventual upgrade RAM para 16–32GB DDR4 SO-DIMM (M720q suporta ate 64GB)
 
