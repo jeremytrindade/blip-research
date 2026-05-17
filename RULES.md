@@ -78,3 +78,22 @@ When the user says "use blip-research" or "go search X in blip-research" or equi
    - Update README.md index and HANDOFF.md in the same commit
 4. **Verify the HTML version number** — check existing `.vNN.html` files in the folder and increment `NN` correctly
 5. **Never assume the mounted NTFS path is current** — always clone fresh (Rule #1 NTFS warning)
+
+## Rule #7 — README Health (End of Session)
+At the end of any session in any blip-* repo, verify the README is up to date before the final commit.
+
+### Checklist
+- [ ] **Session-start phrase present** — the "## Session Start" block must exist. If missing, add it (see README.md of blip-research for the canonical Portuguese phrase).
+- [ ] **Structure section current** — the `## Structure` section must reflect the actual files and folders that now exist after this session.
+- [ ] **Research index updated** — if a new `.md` or `.html` file was created, the index table in README.md must include it (with both `.md` and `.vNN.html` links if applicable).
+- [ ] **No broken references** — any file paths, commands, or links mentioned in the README must point to things that actually exist.
+
+### When this applies
+This rule applies to **every session** that produces a commit, including:
+- Any blip-research research session (after adding new findings)
+- Any blip-aij or automation update session
+- Any session that creates, moves, or renames files in any blip-* repo
+- Any session triggered by the "use blip-research" phrase (Rule #6)
+
+### Automated backstop
+The `blip-repo-health` repo runs a daily 5am task that audits one repo per day and applies these same checks automatically. Rule #7 is the manual per-session equivalent — do not rely on the automated task as a replacement for doing it at session end.
