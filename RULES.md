@@ -14,6 +14,12 @@ Setup: `git remote set-url origin https://<TOKEN>@github.com/jeremytrindade/blip
 
 **NTFS mount warning:** The bash sandbox may see a stale NTFS mount at the workspace path. Always work from a fresh `/tmp/` clone — never trust `wc -l` or file edits on the mounted NTFS path. Git lock files on NTFS cannot be deleted from Linux (`rm` returns "Operation not permitted"). Solution: clone fresh in `/tmp/` where Linux has full control.
 
+**Git pull fallback:** If `git pull` fails due to network/proxy restrictions in the sandbox, do NOT fall back to local files silently. Instead, fetch the latest `README.md` and `RULES.md` from GitHub via Claude in Chrome:
+- `https://raw.githubusercontent.com/jeremytrindade/blip-research/main/README.md`
+- `https://raw.githubusercontent.com/jeremytrindade/blip-research/main/RULES.md`
+
+Use these as the authoritative versions for the session. Never proceed with local files that could not be confirmed as current.
+
 ## Rule #2 — Browser Navigation Fallback
 When the `navigate` MCP tool fails with a site-blocked error:
 1. Try `window.location.href` via `javascript_tool` instead
@@ -40,6 +46,7 @@ Every completed research file **must** have an HTML companion. This is not optio
 ```
 YYYYMMDD-topic-slug.vNN.html
 ```
+
 Where `NN` is a zero-padded sequential version number starting at `01`.
 
 Examples:
